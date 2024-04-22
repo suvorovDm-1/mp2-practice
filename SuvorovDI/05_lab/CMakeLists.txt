@@ -13,18 +13,15 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE})
 
-set(MP2_LIBRARY_LISTS "${PROJECT_NAME}_lists")
-set(MP2_LIBRARY_POLYNOMS "${PROJECT_NAME}_polynoms")
-set(MP2_TESTS   "tests_${PROJECT_NAME}")
-set(MP2_INCLUDE_LISTS "${CMAKE_CURRENT_SOURCE_DIR}/lib_tlist/include")
-set(MP2_INCLUDE_POLYNOMS "${CMAKE_CURRENT_SOURCE_DIR}/lib_tpolynom/include")
+set(MP2_LIBRARY_TABLES "${PROJECT_NAME}_tables")
+set(MP2_TESTS "tests_${PROJECT_NAME}")
+set(MP2_INCLUDE_TABLES "${CMAKE_CURRENT_SOURCE_DIR}/lib_tables/include")
 
 # BUILD
 add_subdirectory(samples)
 add_subdirectory(gtest)
 add_subdirectory(tests)
-add_subdirectory(lib_tlist/src)
-add_subdirectory(lib_tpolynom/src)
+add_subdirectory(lib_tables/src)
 
 # REPORT
 message( STATUS "" )
