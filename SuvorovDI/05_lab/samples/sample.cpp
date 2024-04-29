@@ -5,15 +5,11 @@
 int main() {
   try {
     ScanTable<std::string, int> scan_table(100);
-    std::cout << scan_table;
-
     scan_table.Insert("a", new int(2));
-    /*scan_table.Insert("a", new int(5));
+    
+    scan_table.Insert("a", new int(5));
     scan_table.Insert("a", new int(23));
-
-    std::cout << 5;
     std::cout << scan_table;
-    std::cout << 6;*/
   }
   catch (std::exception ex) {
     std::cout << ex.what();
