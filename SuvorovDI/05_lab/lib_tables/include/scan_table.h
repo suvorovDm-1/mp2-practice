@@ -11,15 +11,24 @@ protected:
 
 public:
   ScanTable(int maxSize);
-  ScanTable(const ScanTable &t);
-  ~ScanTable();
+  ScanTable(const ScanTable<TKey, TData> &t);
+  ~ScanTable() override {
+    if (!IsEmpty())
+      for (int i = 0; i < count; i++)
+      {
+        delete recs[i];
+      }
+    delete[] recs;
+  }
 
   TabRecord<TKey, TData> *Find(TKey key) override; // const??
   void Insert(TKey key, TData *data) override;
   void Remove(TKey key) override;
 
-  virtual TabRecord<TKey, TData> *GetCurrent() const override
+  TabRecord<TKey, TData> *GetCurrent() const override
   {
+    if (IsEmpty())
+      throw std::exception("Table_is_empty\n");
     return recs[currPos];
   }
 
@@ -47,35 +56,28 @@ public:
 };
 
 template <typename TKey, typename TData>
-ScanTable<TKey, TData>::ScanTable(int maxSize) : Table(maxSize)
+ScanTable<TKey, TData>::ScanTable(int size) : Table<TKey, TData>(size)
 {
-  recs = new TabRecord<TKey, TData>* [maxSize];
-  currPos = 0;
+  recs = new TabRecord<TKey, TData>* [size];
 }
 
 template <typename TKey, typename TData>
-ScanTable<TKey, TData>::ScanTable(const ScanTable<TKey, TData>& t) : Table(t.maxSize)
+ScanTable<TKey, TData>::ScanTable(const ScanTable<TKey, TData>& t) : Table<TKey, TData>(t.maxSize)
 {
   if (t.IsEmpty())
   {
-    recs = nullptr;
+    recs = new TabRecord<TKey, TData>* [maxSize];
     return;
   }
 
   count = t.count;
   currPos = 0;
-  recs = new TabRecord<TKey, TData> *[maxSize];
+  recs = new TabRecord<TKey, TData>* [maxSize];
 
   for (int i = 0; i < count; i++)
   {
     recs[i] = new TabRecord<TKey, TData>(t.recs[i]->key, t.recs[i]->data);
   }
-}
-
-template <typename TKey, typename TData>
-ScanTable<TKey, TData>::~ScanTable()
-{
-  delete[] recs;
 }
 
 template <typename TKey, typename TData>
@@ -100,6 +102,8 @@ void ScanTable<TKey, TData>::Insert(TKey key, TData* data)
 {
   if (IsFull())
     throw std::exception("table is full\n");
+  if (Find(key) != nullptr)
+    throw std::exception("record with this key already existed\n");
   TabRecord<TKey, TData>* res = new TabRecord<TKey, TData>(key, data);
   recs[count++] = res;
 }

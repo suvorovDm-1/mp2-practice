@@ -10,12 +10,17 @@ private:
   void QuickSort(TabRecord<TKey, TData> **rec_arr, int size);
 
 public:
-  SortedTable(int maxSize) : ScanTable(maxSize){};
-  SortedTable(const ScanTable<TKey, TData> *);
-  ~SortedTable();
+  SortedTable(int maxSize) : ScanTable(maxSize) {};
+  SortedTable(const ScanTable<TKey, TData>*);
   TabRecord<TKey, TData> *Find(TKey key) override;
   void Insert(TKey key, TData *data) override;
   void Remove(TKey key) override;
+  TabRecord<TKey, TData>* GetCurrent() const override
+  {
+    if (IsEmpty())
+      throw std::exception("Table_is_empty\n");
+    return recs[currPos];
+  }
 };
 
 template <typename TKey, typename TData>
@@ -68,16 +73,10 @@ SortedTable<TKey, TData>::SortedTable(const ScanTable<TKey, TData> *t) : ScanTab
 }
 
 template <typename TKey, typename TData>
-SortedTable<TKey, TData>::~SortedTable()
-{
-  delete[] recs;
-}
-
-template <typename TKey, typename TData>
 TabRecord<TKey, TData> *SortedTable<TKey, TData>::Find(TKey key)
 {
   int left = 0, right = count - 1;
-  TabRecord<TKey, TData> *record = nullptr;
+  TabRecord<TKey, TData>* record = nullptr;
   while (left <= right)
   {
     int middle = (left + right) / 2;
@@ -102,13 +101,14 @@ void SortedTable<TKey, TData>::Insert(TKey key, TData *data)
   if (IsFull())
     throw std::exception("table_is_full\n");
 
-  Find(key);
-  for (int count - 1; i >= currPos; i--)
+  if (Find(key) != nullptr)
+    throw std::exception("record with this key already existed\n");
+  for (int i = count - 1; i > currPos; i--)
   {
-    resc[i + 1] = recs[i];
+    recs[i + 1] = recs[i];
   }
 
-  recs[currpos] = new TabRecord<TKey, TData>(key, data);
+  recs[++currPos] = new TabRecord<TKey, TData>(key, data);
   count++;
 }
 
@@ -118,11 +118,11 @@ void SortedTable<TKey, TData>::Remove(TKey key)
   if (IsEmpty())
     throw std::exception("table_is_empty\n");
 
-  TabRecord<TKey, TData> *res = Find(key);
+  TabRecord<TKey, TData>* res = Find(key);
   if (res == nullptr)
-    throw std::exception("no_such_element");
+    throw std::exception("no_such_element\n");
   delete res;
-  for (int i = currpos; i < count - 1; i++)
+  for (int i = currPos; i < count - 1; i++)
     recs[i] = recs[i + 1];
   count--;
 }

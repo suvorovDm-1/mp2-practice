@@ -1,4 +1,4 @@
-set(target ${MP2_LIBRARY_LISTS})
+set(target ${MP2_LIBRARY_TABLES})
 
 file(GLOB hdrs "*.h*" "${MP2_INCLUDE_TABLES}/*.h*")
 file(GLOB srcs "*.cpp")

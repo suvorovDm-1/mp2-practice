@@ -35,7 +35,7 @@ struct TabRecord
     return key = r.key;
   }
 
-  friend std::ostream &operator<<(std::ostream &out, const TabRecord < TKey, TData &r)
+  friend std::ostream& operator<<(std::ostream& out, const TabRecord<TKey, TData>& r)
   {
     out << "KEY: " << r.key << " -> VALUE: " << *r.data << "\n";
     return out;
@@ -72,13 +72,13 @@ public:
   {
     return count == 0;
   }
-  virtual void Reset() noexcept
+  void Reset() noexcept
   {
     currPos = 0;
   }
   virtual bool IsEnded() const noexcept
   {
-    return currPos == maxSize - 1; // general case
+    return currPos == maxSize; // general case
   }
   virtual void Next()
   {
@@ -88,3 +88,7 @@ public:
   }
   virtual TabRecord<TKey, TData> *GetCurrent() const = 0;
 };
+
+template <typename TKey, typename TData>
+Table<TKey, TData>::~Table() {}
+// БЕЗ ЭТОГО -- ссылка на неразрешимый элемент! В конструкторе
