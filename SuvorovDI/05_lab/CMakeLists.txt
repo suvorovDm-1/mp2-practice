@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.7)
 set(PROJECT_NAME tables)
 project(${PROJECT_NAME})
 
+set(Qt6_DIR "C:/Qt/6.7.1/msvc2019_64/lib/cmake/Qt6")
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui)
+
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
@@ -15,6 +18,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEAS
 
 set(MP2_LIBRARY_TABLES "${PROJECT_NAME}")
 set(MP2_TESTS "tests_${PROJECT_NAME}")
+set(QT_SAMPLE "qt_${PROJECT_NAME}")
 set(MP2_INCLUDE_TABLES "${CMAKE_CURRENT_SOURCE_DIR}/lib_tables/include")
 
 # BUILD
@@ -29,10 +33,8 @@ message( STATUS "General configuration for ${PROJECT_NAME}" )
 message( STATUS "======================================" )
 message( STATUS "" )
 message( STATUS "   Configuration:        ${CMAKE_BUILD_TYPE}" )
-message( STATUS "   MP2_LIBRARY_LISTS:    ${MP2_LIBRARY_LISTS}" )
-message( STATUS "   MP2_LIBRARY_POLYNOMS: ${MP2_LIBRARY_POLYNOMS}" )
+message( STATUS "   MP2_LIBRARY_TABLES:   ${MP2_LIBRARY_TABLES}" )
 message( STATUS "   MP2_TESTS:            ${MP2_TESTS}" )
-message( STATUS "   MP2_INCLUDE_LISTS:    ${MP2_INCLUDE_LISTS}" )
-message( STATUS "   MP2_INCLUDE_POLYNOMS: ${MP2_INCLUDE_POLYNOMS}" )
+message( STATUS "   MP2_INCLUDE_TABLES: ${MP2_INCLUDE_TABLES}" )
 message( STATUS "======================================" )
 message( STATUS "" )

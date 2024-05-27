@@ -21,10 +21,30 @@ public:
       throw std::exception("Table_is_empty\n");
     return recs[currPos];
   }
+  bool IsEnded() const noexcept override
+  {
+    return currPos == count;
+  }
+  friend std::ostream& operator<<(std::ostream& out, const SortedTable<TKey, TData>& t)
+  {
+    if (t.IsEmpty())
+    {
+      out << "EMPTY_TABLE\n";
+      return out;
+    }
+
+    ScanTable<TKey, TData> tmp(t);
+    while (!tmp.IsEnded())
+    {
+      out << *tmp.GetCurrent();
+      tmp.Next();
+    }
+    return out;
+  }
 };
 
 template <typename TKey, typename TData>
-void QuickSort(TabRecord<TKey, TData> **rec_arr, int size)
+void SortedTable<TKey, TData>::QuickSort(TabRecord<TKey, TData> **rec_arr, int size)
 {
   int i = 0;
   int j = size - 1;
@@ -33,11 +53,11 @@ void QuickSort(TabRecord<TKey, TData> **rec_arr, int size)
 
   do
   {
-    while (recs[i]->data < mid->data)
+    while (recs[i]->key < mid->key)
     {
       i++;
     }
-    while (recs[j]->data > mid->data)
+    while (recs[j]->key > mid->key)
     {
       j--;
     }
@@ -64,12 +84,12 @@ void QuickSort(TabRecord<TKey, TData> **rec_arr, int size)
 }
 
 template <typename TKey, typename TData>
-SortedTable<TKey, TData>::SortedTable(const ScanTable<TKey, TData> *t) : ScanTable(t)
+SortedTable<TKey, TData>::SortedTable(const ScanTable<TKey, TData>* t) : ScanTable<TKey, TData>(*t)
 {
   if (IsEmpty())
     return;
 
-  QuickSort(this->recs, this->count);
+  this->QuickSort(this->recs, this->count);
 }
 
 template <typename TKey, typename TData>
@@ -100,9 +120,9 @@ void SortedTable<TKey, TData>::Insert(TKey key, TData *data)
 {
   if (IsFull())
     throw std::exception("table_is_full\n");
-
   if (Find(key) != nullptr)
     throw std::exception("record with this key already existed\n");
+
   for (int i = count - 1; i > currPos; i--)
   {
     recs[i + 1] = recs[i];

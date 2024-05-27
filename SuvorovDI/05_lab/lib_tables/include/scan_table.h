@@ -21,11 +21,11 @@ public:
     delete[] recs;
   }
 
-  TabRecord<TKey, TData> *Find(TKey key) override; // const??
+  TabRecord<TKey, TData>* Find(TKey key) override; // const??
   void Insert(TKey key, TData *data) override;
   void Remove(TKey key) override;
 
-  TabRecord<TKey, TData> *GetCurrent() const override
+  TabRecord<TKey, TData>* GetCurrent() const override
   {
     if (IsEmpty())
       throw std::exception("Table_is_empty\n");
@@ -34,7 +34,7 @@ public:
 
   bool IsEnded() const noexcept override
   {
-    return currPos == count;
+    return currPos == count - 1;
   }
 
   friend std::ostream& operator<<(std::ostream& out, const ScanTable<TKey, TData>& t)
@@ -105,6 +105,7 @@ void ScanTable<TKey, TData>::Insert(TKey key, TData* data)
   if (Find(key) != nullptr)
     throw std::exception("record with this key already existed\n");
   TabRecord<TKey, TData>* res = new TabRecord<TKey, TData>(key, data);
+  currPos = count;
   recs[count++] = res;
 }
 

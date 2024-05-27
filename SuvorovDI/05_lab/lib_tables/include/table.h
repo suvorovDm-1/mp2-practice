@@ -30,9 +30,9 @@ struct TabRecord
     return *this;
   }
 
-  bool operator==(const TabRecord<TKey, TData> &r)
+  bool operator==(const TabRecord<TKey, TData> &r) const
   {
-    return key = r.key;
+    return (key == r.key) && (*data == *r.data);
   }
 
   friend std::ostream& operator<<(std::ostream& out, const TabRecord<TKey, TData>& r)
@@ -78,7 +78,7 @@ public:
   }
   virtual bool IsEnded() const noexcept
   {
-    return currPos == maxSize; // general case
+    return currPos == maxSize - 1; // general case
   }
   virtual void Next()
   {
@@ -86,9 +86,8 @@ public:
       throw std::exception("table is ended");
     currPos += 1;
   }
-  virtual TabRecord<TKey, TData> *GetCurrent() const = 0;
+  virtual TabRecord<TKey, TData>* GetCurrent() const = 0;
 };
 
 template <typename TKey, typename TData>
 Table<TKey, TData>::~Table() {}
-// БЕЗ ЭТОГО -- ссылка на неразрешимый элемент! В конструкторе
