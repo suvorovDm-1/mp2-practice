@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace my_namespace {
+
 template <typename TKey, typename TData>
 struct TabRecord
 {
@@ -91,3 +93,5 @@ public:
 
 template <typename TKey, typename TData>
 Table<TKey, TData>::~Table() {}
+
+}

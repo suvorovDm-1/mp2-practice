@@ -3,6 +3,8 @@
 #include <iostream>
 #include "table.h"
 
+namespace my_namespace {
+
 template <typename TKey, typename TData>
 class ScanTable : public Table<TKey, TData>
 {
@@ -119,4 +121,6 @@ void ScanTable<TKey, TData>::Remove(TKey key)
 
   delete recs[currPos];
   recs[currPos] = recs[--count];
+}
+
 }

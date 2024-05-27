@@ -3,6 +3,8 @@
 #include "table.h"
 #include "scan_table.h"
 
+namespace my_namespace {
+
 template <typename TKey, typename TData>
 class SortedTable : public ScanTable<TKey, TData>
 {
@@ -145,4 +147,6 @@ void SortedTable<TKey, TData>::Remove(TKey key)
   for (int i = currPos; i < count - 1; i++)
     recs[i] = recs[i + 1];
   count--;
+}
+
 }

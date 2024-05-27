@@ -2,6 +2,8 @@
 #include <gtest.h>
 #include "sorted_table.h"
 
+using namespace my_namespace;
+
 /*  --- CREATING ---  */
 TEST(SortedTable, can_create_empty_sortedtable) {
 	//ASSERT_ANY_THROW(ScanTable<std::string, int> s_table(10));

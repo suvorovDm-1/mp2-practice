@@ -3,6 +3,8 @@
 #include <type_traits>
 #include "table.h"
 
+namespace my_namespace {
+
 template <typename TKey, typename TData>
 class HashTable : public Table<TKey, TData>
 {
@@ -201,3 +203,5 @@ class StringHashTable : public ArrayHashTable<std::string, TData> {
 public:
   StringHashTable(int n, int step) : ArrayHashTable<std::string, TData>(n, step) {}
 };
+
+}

@@ -2,6 +2,8 @@
 #include <gtest.h>
 #include "array_hash_table.h"
 
+using namespace my_namespace;
+
 /*  --- CREATING ---  */
 TEST(ArrayHashTable, can_create_empty_arrhashtable) {
 	//ASSERT_ANY_THROW(ScanTable<std::string, int> s_table(10));

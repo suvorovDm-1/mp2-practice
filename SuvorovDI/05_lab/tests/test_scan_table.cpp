@@ -3,6 +3,8 @@
 #include "table.h"
 #include "scan_table.h"
 
+using namespace my_namespace;
+
 /*  --- CREATING ---  */
 TEST(ScanTable, can_create_empty_scantable) {
 	//ASSERT_ANY_THROW(ScanTable<std::string, int> s_table(10));
