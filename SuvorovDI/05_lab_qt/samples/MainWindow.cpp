@@ -1,98 +1,73 @@
-// #include <QMainWindow>
-// #include <QPushButton>
-// #include <QTableWidget>
-// #include <QLineEdit>
-// #include <QVBoxLayout>
-// #include <QWidget>
-// #include <QMessageBox>
-// #include <QStackedWidget>
+#include "MainWindow.h"
 
-// #include <iostream>
-// //#include "scan_table.h"
+MainWindow::MainWindow(QWidget* parent)
+  : QMainWindow(parent) {
+  stackedWidget = new QStackedWidget(this);
+  // Главная страница
+  QWidget *mainPage = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout(mainPage);
+  QPushButton *findButton = new QPushButton("Найти", this);
+  QPushButton *addButton = new QPushButton("Добавить", this);
+  QPushButton *deleteButton = new QPushButton("Удалить", this);
 
-// class MainWindow : public QMainWindow {
-//   Q_OBJECT
-// public:
-//   MainWindow(QWidget* parent = nullptr);
-    
-// private:
-//   QStackedWidget* stackedWidget;
-//   QTableWidget* tableWidget;
+  mainLayout->addWidget(findButton);
+  mainLayout->addWidget(addButton);
+  mainLayout->addWidget(deleteButton);
+  mainPage->setLayout(mainLayout);
 
-// private slots:
-//   void showMainPage();
-//   void showTableChoicePage();
-//   void showTablePage();
-// };
+  // Страница выбора таблицы
+  QWidget *tableChoicePage = new QWidget(this);
+  QVBoxLayout *tableChoiceLayout = new QVBoxLayout(tableChoicePage);
+  QPushButton *scanTableButton = new QPushButton("Просматриваемая таблица", this);
+  QPushButton *sortedTableButton = new QPushButton("Сортированная таблица", this);
+  QPushButton *hashTableButton = new QPushButton("Хэш таблица", this);
 
-// MainWindow::MainWindow(QWidget* parent)
-//   : QMainWindow(parent) {
-//   stackedWidget = new QStackedWidget(this);
-//   // Главная страница
-//   QWidget *mainPage = new QWidget(this);
-//   QVBoxLayout *mainLayout = new QVBoxLayout(mainPage);
-//   QPushButton *findButton = new QPushButton("Найти", this);
-//   QPushButton *addButton = new QPushButton("Добавить", this);
-//   QPushButton *deleteButton = new QPushButton("Удалить", this);
+  tableChoiceLayout->addWidget(scanTableButton);
+  tableChoiceLayout->addWidget(sortedTableButton);
+  tableChoiceLayout->addWidget(hashTableButton);
+  tableChoicePage->setLayout(tableChoiceLayout);
 
-//   mainLayout->addWidget(findButton);
-//   mainLayout->addWidget(addButton);
-//   mainLayout->addWidget(deleteButton);
-//   mainPage->setLayout(mainLayout);
+  // Страница с таблицей
+  QWidget *tablePage = new QWidget(this);
+  QVBoxLayout *tableLayout = new QVBoxLayout(tablePage);
+  tableWidget = new QTableWidget(0, 2, this);
+  tableWidget->setHorizontalHeaderLabels(QStringList() << "Key" << "Value");
+  QPushButton *continueButton = new QPushButton("Продолжить", this);
 
-//   // Страница выбора таблицы
-//   QWidget *tableChoicePage = new QWidget(this);
-//   QVBoxLayout *tableChoiceLayout = new QVBoxLayout(tableChoicePage);
-//   QPushButton *scanTableButton = new QPushButton("Просматриваемая таблица", this);
-//   QPushButton *sortedTableButton = new QPushButton("Сортированная таблица", this);
-//   QPushButton *hashTableButton = new QPushButton("Хэш таблица", this);
+  tableLayout->addWidget(tableWidget);
+  tableLayout->addWidget(continueButton);
+  tablePage->setLayout(tableLayout);
 
-//   tableChoiceLayout->addWidget(scanTableButton);
-//   tableChoiceLayout->addWidget(sortedTableButton);
-//   tableChoiceLayout->addWidget(hashTableButton);
-//   tableChoicePage->setLayout(tableChoiceLayout);
+  // Добавляем страницы в QStackedWidget
+  stackedWidget->addWidget(mainPage); // Index 0
+  stackedWidget->addWidget(tableChoicePage); // Index 1
+  stackedWidget->addWidget(tablePage); // Index 2
 
-//   // Страница с таблицей
-//   QWidget *tablePage = new QWidget(this);
-//   QVBoxLayout *tableLayout = new QVBoxLayout(tablePage);
-//   tableWidget = new QTableWidget(0, 2, this);
-//   tableWidget->setHorizontalHeaderLabels(QStringList() << "Key" << "Value");
-//   QPushButton *continueButton = new QPushButton("Продолжить", this);
+  setCentralWidget(stackedWidget);
 
-//   tableLayout->addWidget(tableWidget);
-//   tableLayout->addWidget(continueButton);
-//   tablePage->setLayout(tableLayout);
+  // Подключение сигналов и слотов
+  connect(findButton, &QPushButton::clicked, this, &MainWindow::showTableChoicePage);
+  connect(addButton, &QPushButton::clicked, this, &MainWindow::showTableChoicePage);
+  connect(deleteButton, &QPushButton::clicked, this, &MainWindow::showTableChoicePage);
 
-//   // Добавляем страницы в QStackedWidget
-//   stackedWidget->addWidget(mainPage); // Index 0
-//   stackedWidget->addWidget(tableChoicePage); // Index 1
-//   stackedWidget->addWidget(tablePage); // Index 2
+  connect(scanTableButton, &QPushButton::clicked, this, &MainWindow::showTablePage);
+  connect(sortedTableButton, &QPushButton::clicked, this, &MainWindow::showTablePage);
+  connect(hashTableButton, &QPushButton::clicked, this, &MainWindow::showTablePage);
 
-//   setCentralWidget(stackedWidget);
+  connect(continueButton, &QPushButton::clicked, this, &MainWindow::showMainPage);
+}
 
-//   // Подключение сигналов и слотов
-//   connect(findButton, &QPushButton::clicked, this, &MainWindow::showTableChoicePage);
-//   connect(addButton, &QPushButton::clicked, this, &MainWindow::showTableChoicePage);
-//   connect(deleteButton, &QPushButton::clicked, this, &MainWindow::showTableChoicePage);
+void MainWindow::showMainPage() {
+    stackedWidget->setCurrentIndex(0);
+}
 
-//   connect(scanTableButton, &QPushButton::clicked, this, &MainWindow::showTablePage);
-//   connect(sortedTableButton, &QPushButton::clicked, this, &MainWindow::showTablePage);
-//   connect(hashTableButton, &QPushButton::clicked, this, &MainWindow::showTablePage);
+void MainWindow::showTableChoicePage() {
+    stackedWidget->setCurrentIndex(1);
+}
 
-//   connect(continueButton, &QPushButton::clicked, this, &MainWindow::showMainPage);
-// }
-
-// void MainWindow::showMainPage() {
-//     stackedWidget->setCurrentIndex(0);
-// }
-
-// void MainWindow::showTableChoicePage() {
-//     stackedWidget->setCurrentIndex(1);
-// }
-
-// void MainWindow::showTablePage() {
-//     // Здесь вы можете установить разные таблицы в зависимости от нажатой кнопки
-//     tableWidget->clearContents();
-//     tableWidget->setRowCount(0);
-//     stackedWidget->setCurrentIndex(2);
-// }
+void MainWindow::showTablePage() {
+    // Здесь вы можете установить разные таблицы в зависимости от нажатой кнопки
+    tableWidget->clearContents();
+    tableWidget->setRowCount(0);
+    stackedWidget->setCurrentIndex(2);
+}
