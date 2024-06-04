@@ -9,6 +9,7 @@
 
 #include <iostream>
 //#include "scan_table.h"
+#include "table.h"
 
 class MainWindow : public QMainWindow {
   Q_OBJECT

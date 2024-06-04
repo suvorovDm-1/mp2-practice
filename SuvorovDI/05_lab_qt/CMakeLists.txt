@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.7)
 set(PROJECT_NAME tables)
 project(${PROJECT_NAME})
 
+set(CMAKE_PREFIX_PATH "C:/Qt/6.7.1/msvc2019_64")
 set(Qt6_DIR "C:/Qt/6.7.1/msvc2019_64/lib/cmake/Qt6")
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui)
 

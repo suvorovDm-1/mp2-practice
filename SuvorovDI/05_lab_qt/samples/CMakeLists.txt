@@ -37,7 +37,7 @@ qt6_wrap_cpp(MyQtApp_MOC MainWindow.h)
 target_sources(${sample_name} PRIVATE ${MyQtApp_MOC})
 
 # Подключите библиотеки
-target_link_libraries(${sample_name} Qt6::Core Qt6::Widgets Qt6::Gui ${MP2_LIBRARY_TABLES})
+target_link_libraries(${sample_name} PRIVATE ${MP2_LIBRARY_TABLES} Qt6::Core Qt6::Widgets Qt6::Gui)
 
 # Указание директорий для поиска заголовочных файлов
 target_include_directories(${sample_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
